@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "self-governance"
+version = "0.1.0"
+description = ""
+authors = ["Jiayu Yi <yijiayu@gmail.com>"]
+readme = "README.md"
+packages = [{include = "self_governance"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpx = "^0.23.3"
+fastapi = "^0.89.1"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+mypy = "^0.991"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
