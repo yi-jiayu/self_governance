@@ -1,0 +1,30 @@
+name: Address issues
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Install dependencies
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install --no-root
+    - name: Address issues
+      env:
+        NATIONSTATES_PASSWORD: ${{ secrets.NATIONSTATES_PASSWORD }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        poetry run python -m self_governance Wilbert 'Wilbert is a nation which values conformity, efficiency and economic growth.'
