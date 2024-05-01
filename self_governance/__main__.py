@@ -16,9 +16,7 @@ Scenario:
 {{ issue.text }}{% for option in issue.options %}
 
 Option {{ loop.index }}:
-{{ option.text }}{% endfor %}
-
-Answer: Option"""
+{{ option.text }}{% endfor %}"""
 )
 
 
