@@ -31,7 +31,7 @@ def address_issue(nation: Nation, bio: str, issue: Issue) -> None:
     print(prompt)
 
     response = openai.Completion.create(
-        model="text-davinci-001",
+        model="gpt-3.5-turbo-instruct",
         prompt=prompt,
         max_tokens=1,
         temperature=0.4,
