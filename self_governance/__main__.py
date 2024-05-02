@@ -43,7 +43,7 @@ def address_issue(openai_client, nation: Nation, bio: str, issue: Issue) -> None
         presence_penalty=0,
     )
     print(response)
-    option_index = int(response.choices[0].message.content)
+    option_index = int(response.choices[0].message.content) - 1
     chosen_option = issue.options[option_index]
 
     return nation.answer_issue(issue.id, chosen_option.id)
