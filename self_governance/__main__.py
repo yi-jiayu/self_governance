@@ -19,7 +19,7 @@ Option {{ loop.index }}:
 )
 
 
-def address_issue(openai_client, nation: Nation, bio: str, issue: Issue) -> None:
+def address_issue(openai_client, nation: Nation, bio: str, issue: Issue):
     prompt = template.render(name=nation.name, bio=bio, issue=issue)
     print(prompt)
 
@@ -58,7 +58,7 @@ def address_issue(openai_client, nation: Nation, bio: str, issue: Issue) -> None
         chosen_option = issue.options[option_index]
         break
 
-    nation.answer_issue(issue.id, chosen_option.id)
+    return nation.answer_issue(issue.id, chosen_option.id)
 
 
 def main(nation_name: str, nation_bio: str):
@@ -66,10 +66,11 @@ def main(nation_name: str, nation_bio: str):
     password = os.environ["NATIONSTATES_PASSWORD"]
     nation = Nation(nation_name, password, session_file="session.json")
     issues = nation.get_issues()
-    for issue in issues:
-        print(address_issue(client, nation, nation_bio, issue))
-    else:
+    if not issues:
         print("No issues to address")
+    else:
+        for issue in issues:
+            print(address_issue(client, nation, nation_bio, issue))
 
 
 typer.run(main)
