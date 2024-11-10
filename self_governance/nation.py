@@ -55,7 +55,7 @@ class Nation:
         self.password = password
         self.pin = None
         self.autologin = None
-        self.user_agent = f"self_governance@{__version__}"
+        self.user_agent = f"self_governance@{__version__} (https://github.com/yi-jiayu/self_governance)"
         self.http = httpx.Client(
             base_url="https://www.nationstates.net/cgi-bin/api.cgi",
             headers={"user-agent": self.user_agent},
