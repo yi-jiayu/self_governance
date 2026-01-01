@@ -1,7 +1,7 @@
 import json
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from typing import Literal, Self, TypedDict
+from typing import Literal, Self
 from xml.etree.ElementTree import Element
 
 import httpx
@@ -55,9 +55,9 @@ class Nation:
         self.password = password
         self.pin = None
         self.autologin = None
-        self.user_agent = f"self_governance@{__version__} (https://github.com/yi-jiayu/self_governance)"
+        self.user_agent = f"https://github.com/yi-jiayu/self_governance@{__version__}"
         self.http = httpx.Client(
-            base_url="https://www.nationstates.net/cgi-bin/api.cgi",
+            base_url="https://www.nationstates.net/",
             headers={"user-agent": self.user_agent},
         )
         self.session = {}
@@ -99,9 +99,10 @@ class Nation:
         args = args | {"nation": self.name}
 
         if method == "POST":
-            response = self.http.post("", data=args, headers=headers)
+            response = self.http.post("cgi-bin/api.cgi", data=args, headers=headers)
         else:
-            response = self.http.get("", params=args, headers=headers)
+            response = self.http.get("cgi-bin/api.cgi", params=args, headers=headers)
+        response.raise_for_status()
 
         if pin := response.headers.get("x-pin"):
             self.pin = pin
@@ -115,7 +116,6 @@ class Nation:
 
     def get_issues(self):
         response = self._make_request({"q": "issues"})
-        response.raise_for_status()
 
         root = ET.fromstring(response.text)
         return [Issue.from_xml(elem) for elem in root.find("ISSUES").findall("ISSUE")]
@@ -124,5 +124,4 @@ class Nation:
         response = self._make_request(
             {"c": "issue", "issue": issue_id, "option": option_id}
         )
-        response.raise_for_status()
         return response.text
